@@ -16,7 +16,7 @@ function App() {
   const connect = () => {
     Axios({
       method: "get",
-      url: "http://localhost:8000/api/kaznu/start-exam/?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxMDU3IiwibmFtZSI6Imthem51IiwiZHVyYXRpb24iOjYwLCJ0aW1lb3BlbiI6MTYwMzY3MDQwMCwidGltZWNsb3NlIjoxNjA0MDI5NjAwLCJleGFtX25hbWUiOiJCaW9sb2d5IiwicnVsZXMiOnsiZmFjZV9yZWMiOmZhbHNlLCJzY3JlZW4iOnRydWUsImxpdmVfY2hhdCI6ZmFsc2UsImF1ZGlvIjp0cnVlLCJzdHJlYW0iOnRydWUsImF1dGhvcml6ZSI6ZmFsc2UsImNsaXBib2FyZCI6dHJ1ZSwiZHVhbF9zY3JlZW4iOmZhbHNlLCJtb2JpbGUiOmZhbHNlfSwidXJsIjoiaHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8iLCJzdWJtaXRfdXJsIjoiaHR0cHM6Ly90aGUtc3RlcHBlLmNvbS8iLCJjaGVhdGluZ19jb2RlIjoxMDA4LCJqdGkiOiJmMWNlYWMxYi0yNDI4LTQ5Y2UtYWNjMS0zOTI5NWE4YjFkOTMiLCJpYXQiOjE2MDM5NzAzNjYsImV4cCI6MTYwMzk3Mzk2Nn0.9aNh9SceW1x-iPp3SntOCvIOcFTCQV6qpDIcl5RdZwc",
+      url: "http://localhost:8000/api/kaznu/start-exam/?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxMDUiLCJuYW1lIjoia2F6bnUiLCJkdXJhdGlvbiI6NjAsInRpbWVvcGVuIjoxNjAzNjcwNDAwLCJ0aW1lY2xvc2UiOjE3MDQwMjk2MDAsImV4YW1fbmFtZSI6IkJpb2xvZ3kiLCJydWxlcyI6eyJmYWNlX3JlYyI6dHJ1ZSwic2NyZWVuIjp0cnVlLCJsaXZlX2NoYXQiOmZhbHNlLCJhdWRpbyI6dHJ1ZSwic3RyZWFtIjp0cnVlLCJhdXRob3JpemUiOmZhbHNlLCJjbGlwYm9hcmQiOnRydWUsImR1YWxfc2NyZWVuIjpmYWxzZSwibW9iaWxlIjpmYWxzZX0sInVybCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMS8_YXR0ZW1wdGlkPTMwMTIiLCJzdWJtaXRfdXJsIjoiaHR0cHM6Ly90aGUtc3RlcHBlLmNvbS8iLCJjaGVhdGluZ19jb2RlIjoxMDAsImV4cCI6MTYwNDA3NzM2NiwianRpIjoiZDljYTcxZjQtN2IxOS00NThhLTgyZmQtZDY3ZTVjNTExNDdlIiwiaWF0IjoxNjA0MDczNzY2fQ.EgA5IcajT1jXfoipKCoVPrHBtoXOoaf_dYcRv-LztOM",
       withCredentials: true,
     })
       .then((res) => {
@@ -29,6 +29,18 @@ function App() {
       });
     
   }
+  const submitAero = ( sessionId: string )=>{
+
+    window.onmessage = async function(event: any){
+        if (event.data.message == "can_submit" && event.data.cheating_code==sessionId){
+            // redirect to result page ( Завершите экзамен и перенаправьте куда нужно)
+            // CALL YOUR FUNCTION HERE
+            window.location.replace('http://localhost:3001/results') 
+        } 
+    }
+    
+    window.postMessage({message: 'submit_quiz_aero', cheating_code: sessionId}, window.location.origin)
+}
 
   return (
     <>
@@ -40,7 +52,7 @@ function App() {
         })}
       </ul> */}
       <button onClick={connect}>Start</button>
-      <button onClick={()=>window.location.replace(`http://localhost:3000/submit-quiz/?cheating_code=${'1008'}&redirectUrl=http://localhost:3001`)}>submit</button>
+      <button onClick={()=>submitAero('100')}>submit</button>
 
     </>
   );
